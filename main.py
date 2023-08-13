@@ -1,19 +1,15 @@
-import cv2
+import cv2 as cv
 import matplotlib.pyplot as plt
 
-photo_name=input("Enter photo name with .jpeg: ")
-photo = cv2.imread(photo_name)
+print("Please enter photo name with .jpg")
+photo_name=input()
+photo = cv.imread(photo_name)
 
-face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+photo = cv.cvtColor(photo, cv.COLOR_RGB2GRAY)
 
-faces = face_cascade.detectMultiScale(photo, scaleFactor=1.075, minNeighbors=5, minSize=(15,15))
+img = cv.adaptiveThreshold(photo, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 15, 2)
 
-for(x,y,w,h) in faces:
-  cv2.rectangle(photo, (x,y),(x+w,y+h), (255,0,0),2 )
-  roi = photo[y:y+h, x:x+w]
+plt.figure(figsize=(6,4))
+plt.imshow(img, cmap='gray')
 
-print("Number Of Faces = ",format(len(faces)))
-
-plt.figure(figsize=(8,12))
-plt.imshow(photo)
 plt.show()
